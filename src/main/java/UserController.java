@@ -17,6 +17,8 @@ public class UserController {
         this.view.addLoginListener(new LoginListener());
         this.view.addRegisterListener(new RegisterListener());
         this.view.addClearListener(new ClearListener());
+        this.view.addSwitchToRegisterListener(new SwitchToRegisterListener());
+        this.view.addSwitchToLoginListener(new SwitchToLoginListener());
     }
 
     class LoginListener implements ActionListener {
@@ -44,21 +46,34 @@ public class UserController {
 
     class RegisterListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            String username = view.getUsername();
-            String password = view.getPassword();
+            String username = view.getRegisterUsername();
+            String password = view.getRegisterPassword();
             String role = view.getSelectedRole();
 
             if (model.register(username, password, role)) {
                 view.showMessage("Registration Successful!");
+                view.showLoginPanel(); // Переключиться на панель входа после успешной регистрации
             } else {
-                view.showMessage("Registration Failed!");
+                view.showMessage("Registration Failed: Username already exists!");
             }
         }
     }
 
     class ClearListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            view.clearFields();
+            view.clearLoginFields();
+        }
+    }
+
+    class SwitchToRegisterListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            view.showRegisterPanel();
+        }
+    }
+
+    class SwitchToLoginListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            view.showLoginPanel();
         }
     }
 
